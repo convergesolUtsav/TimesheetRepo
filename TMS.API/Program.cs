@@ -60,10 +60,16 @@ builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IInvoiceDetailRepository, InvoiceDetailRepository>();
 builder.Services.AddScoped<IInvoiceDetailService, InvoiceDetailService>();
 builder.Services.AddScoped<ITimesheetMasterRepository, TimesheetMasterRepository>();
+builder.Services.AddScoped<ITimesheetMasterService, TimesheetMasterService>();
 builder.Services.AddScoped<ITimesheetDetailsRepository, TimesheetDetailsRepository>();
+builder.Services.AddScoped<ITimesheetDetailsService, TimesheetDetailsService>();
 builder.Services.AddScoped<ITimesheetApprovalsRepository, TimesheetApprovalsRepository>();
+builder.Services.AddScoped<ITimesheetApprovalsService, TimesheetApprovalsService>();
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddScoped<ITaskAssignmentRepository, TaskAssignmentRepository>();
+builder.Services.AddScoped<ITaskAssignmentService, TaskAssignmentService>();
+
 #endregion
 
 // Automapper

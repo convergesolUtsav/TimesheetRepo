@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using TMS.API.DTOs;
 using TMS.Core;
 using TMS.Infrastructure.Interfaces;
+using TMS.Services.Interfaces;
 
 namespace TMS.API.Controllers
 {
@@ -12,16 +13,16 @@ namespace TMS.API.Controllers
 	[ApiController]
 	public class TimeSheetMasterController : ControllerBase
 	{
-		private  readonly ITimesheetMasterRepository _timesheetMasterRepository;
+		private readonly ITimesheetMasterService _timesheetMasterService;
 		private readonly ILogger _logger;
 
-		public TimeSheetMasterController(ITimesheetMasterRepository timesheetMasterRepository, ILogger<TimeSheetMasterController> logger)
-		{
-			_timesheetMasterRepository = timesheetMasterRepository;
-			_logger = logger;
-		}
+        public TimeSheetMasterController(ITimesheetMasterService timesheetMasterService, ILogger<TimeSheetMasterController> logger)
+        {
+            _timesheetMasterService = timesheetMasterService;
+            _logger = logger;
+        }
 
-		[HttpGet("{id}")]
+        [HttpGet("{id}")]
 		public async Task <ResponseDTO<TimeSheetMaster>> GetTimesheetMaster(int id) 
 		{	
 			ResponseDTO<TimeSheetMaster> response = new ResponseDTO<TimeSheetMaster>();
@@ -32,7 +33,7 @@ namespace TMS.API.Controllers
 			string ExceptionMessage = "";
 			try
 			{				
-				var result = await _timesheetMasterRepository.GetTimesheetMaster(id);
+				var result = await _timesheetMasterService.GetTimesheetMaster(id);
 				if(result == null)
 				{
 					isSuccess = false;
@@ -74,7 +75,7 @@ namespace TMS.API.Controllers
 			string ExceptionMessage = "";
 				try
 				{
-					var result = await _timesheetMasterRepository.GetTimesheetMastersAll();
+					var result = await _timesheetMasterService.GetTimesheetMastersAll();
 					if (result == null)
 					{
 						isSuccess = false;
@@ -117,7 +118,7 @@ namespace TMS.API.Controllers
 			string ExceptionMessage = "";
 				try
 				{
-					var result = await _timesheetMasterRepository.CreateTimesheetMaster(timesheetMaster);
+					var result = await _timesheetMasterService.CreateTimesheetMaster(timesheetMaster);
 					if (result == null)
 					{
 						isSuccess = false;
@@ -158,7 +159,7 @@ namespace TMS.API.Controllers
 			string ExceptionMessage = "";
 		     try 
 				{	        
-				int entry = await _timesheetMasterRepository.UpdateTimesheetMaster(timesheetMaster);
+				int entry = await _timesheetMasterService.UpdateTimesheetMaster(timesheetMaster);
 				if (entry == null)
 				{
 					isSuccess = false;
@@ -201,7 +202,7 @@ namespace TMS.API.Controllers
 			string ExceptionMessage = "";
 			try
 			{
-				var data = await _timesheetMasterRepository.DeleteTimesheetMaster(id);
+				var data = await _timesheetMasterService.DeleteTimesheetMaster(id);
 				if (data == null)
 				{
 					isSuccess = false;

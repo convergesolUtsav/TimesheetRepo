@@ -4,6 +4,7 @@ using TMS.API.DTOs;
 using TMS.Core;
 using TMS.Infrastructure.Interfaces;
 using TMS.Infrastructure.Repository;
+using TMS.Services.Interfaces;
 
 namespace TMS.API.Controllers
 {
@@ -11,16 +12,16 @@ namespace TMS.API.Controllers
 	[ApiController]
 	public class TaskController : ControllerBase
 	{
-		private readonly ITaskRepository _taskRepository;
+		private readonly ITaskService _taskService; 
 		private readonly ILogger _logger;
 
-		public TaskController(ITaskRepository taskRepository, ILogger<TaskController> logger)
-		{
-			_taskRepository = taskRepository;
-			_logger = logger;
-		}
+        public TaskController(ITaskService taskService, ILogger<TaskController> logger)
+        {
+            _taskService = taskService;
+            _logger = logger;
+        }
 
-		[HttpGet("{id}")]
+        [HttpGet("{id}")]
 		public async Task<ResponseDTO<Tasks>> GetTask(int id)
 		{
 			ResponseDTO<Tasks> response = new ResponseDTO<Tasks>();
@@ -31,7 +32,7 @@ namespace TMS.API.Controllers
 			string ExceptionMessage = "";
 			try
 			{
-				var result = await _taskRepository.GetById(id);
+				var result = await _taskService.GetById(id);
 				if (result == null)
 				{
 					isSuccess = false;
@@ -76,7 +77,7 @@ namespace TMS.API.Controllers
 
 			try
 			{
-				var result = await _taskRepository.GetAll();
+				var result = await _taskService.GetAll();
 				if (result == null)
 				{
 					isSuccess = false;
@@ -117,7 +118,7 @@ namespace TMS.API.Controllers
 			string ExceptionMessage = "";
 			try
 			{
-				var result = await _taskRepository.Add(tasks);
+				var result = await _taskService.Add(tasks);
 				if (result == null)
 				{
 					isSuccess = false;
@@ -158,7 +159,7 @@ namespace TMS.API.Controllers
 			string ExceptionMessage = "";
 			try
 			{
-				int entry = await _taskRepository.Update(tasks);
+				int entry = await _taskService.Update(tasks);
 				if (entry == null)
 				{
 					isSuccess = false;
@@ -201,7 +202,7 @@ namespace TMS.API.Controllers
 			string ExceptionMessage = "";
 			try
 			{
-				var data = await _taskRepository.Delete(id);
+				var data = await _taskService.Delete(id);
 				if (data == null)
 				{
 					isSuccess = false;

@@ -4,6 +4,7 @@ using TMS.API.DTOs;
 using TMS.Core;
 using TMS.Infrastructure.Interfaces;
 using TMS.Infrastructure.Repository;
+using TMS.Services.Interfaces;
 
 namespace TMS.API.Controllers
 {
@@ -11,15 +12,16 @@ namespace TMS.API.Controllers
 	[ApiController]
 	public class TimesheetDetailsController : ControllerBase
 	{
-		private readonly ITimesheetDetailsRepository _timesheetDetailsRepository;
+		private readonly ITimesheetDetailsService _timesheetDetailsService;
 		private readonly ILogger _logger;
 
-		public TimesheetDetailsController(ITimesheetDetailsRepository timesheetDetailsRepository, ILogger<TimesheetDetailsController> logger)
-		{
-			_timesheetDetailsRepository = timesheetDetailsRepository;
-			_logger = logger;
-		}
-		[HttpGet("{id}")]
+        public TimesheetDetailsController(ITimesheetDetailsService timesheetDetailsService, ILogger<TimesheetDetailsController> logger)
+        {
+            _timesheetDetailsService = timesheetDetailsService;
+            _logger = logger;
+        }
+
+        [HttpGet("{id}")]
 		public async Task<ResponseDTO<TimeSheetDetails>> GetTimesheetDetails(int id)
 		{
 			ResponseDTO<TimeSheetDetails> response = new ResponseDTO<TimeSheetDetails>();
@@ -30,7 +32,7 @@ namespace TMS.API.Controllers
 			string ExceptionMessage = "";
 			try
 			{
-				var result = await _timesheetDetailsRepository.GetById(id);
+				var result = await _timesheetDetailsService.GetById(id);
 				if (result == null)
 				{
 					isSuccess = false;
@@ -74,7 +76,7 @@ namespace TMS.API.Controllers
 
 			try
 			{
-				var result = await _timesheetDetailsRepository.GetAll();
+				var result = await _timesheetDetailsService.GetAll();
 				if (result == null)
 				{
 					isSuccess = false;
@@ -116,7 +118,7 @@ namespace TMS.API.Controllers
 			string ExceptionMessage = "";
 			try
 			{
-				var result = await _timesheetDetailsRepository.Add(timeSheetDetails);
+				var result = await _timesheetDetailsService.Add(timeSheetDetails);
 				if (result == null)
 				{
 					isSuccess = false;
@@ -157,7 +159,7 @@ namespace TMS.API.Controllers
 			string ExceptionMessage = "";
 			try
 			{
-				int entry = await _timesheetDetailsRepository.Update(timeSheetDetails);
+				int entry = await _timesheetDetailsService.Update(timeSheetDetails);
 				if (entry == null)
 				{
 					isSuccess = false;
@@ -200,7 +202,7 @@ namespace TMS.API.Controllers
 			string ExceptionMessage = "";
 			try
 			{
-				var data = await _timesheetDetailsRepository.Delete(id);
+				var data = await _timesheetDetailsService.Delete(id);
 				if (data == null)
 				{
 					isSuccess = false;

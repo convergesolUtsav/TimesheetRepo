@@ -4,6 +4,7 @@ using TMS.API.DTOs;
 using TMS.Core;
 using TMS.Infrastructure.Interfaces;
 using TMS.Infrastructure.Repository;
+using TMS.Services.Interfaces;
 
 namespace TMS.API.Controllers
 {
@@ -11,15 +12,16 @@ namespace TMS.API.Controllers
 	[ApiController]
 	public class TimesheetApprovalsController : ControllerBase
 	{
-		private readonly ITimesheetApprovalsRepository _timesheetApprovalsRepository;
+		private readonly ITimesheetApprovalsService _timesheetApprovalsService;
 		private readonly ILogger _logger;
 
-		public TimesheetApprovalsController(ITimesheetApprovalsRepository timesheetApprovalsRepository, ILogger<TimesheetApprovalsController> logger)
-		{
-			_timesheetApprovalsRepository = timesheetApprovalsRepository;
-			_logger = logger;
-		}
-		[HttpGet("{id}")]
+        public TimesheetApprovalsController(ITimesheetApprovalsService timesheetApprovalsService, ILogger<TimesheetApprovalsController> logger)
+        {
+            _timesheetApprovalsService = timesheetApprovalsService;
+            _logger = logger;
+        }
+
+        [HttpGet("{id}")]
 		public async Task<ResponseDTO<TimeSheetApprovals>> GetTimeSheetApproval(int id)
 		{
 			ResponseDTO<TimeSheetApprovals> response = new ResponseDTO<TimeSheetApprovals>();
@@ -30,7 +32,7 @@ namespace TMS.API.Controllers
 			string ExceptionMessage = "";
 			try
 			{
-				var result = await _timesheetApprovalsRepository.GetTimesheetApproval(id);
+				var result = await _timesheetApprovalsService.GetTimesheetApproval(id);
 				if (result == null)
 				{
 					isSuccess = false;
@@ -75,7 +77,7 @@ namespace TMS.API.Controllers
 
 			try
 			{
-				var result = await _timesheetApprovalsRepository.GetTimesheetApprovals();
+				var result = await _timesheetApprovalsService.GetTimesheetApprovals();
 				if (result == null)
 				{
 					isSuccess = false;
@@ -116,7 +118,7 @@ namespace TMS.API.Controllers
 			string ExceptionMessage = "";
 			try
 			{
-				var result = await _timesheetApprovalsRepository.CreateTimesheetApproval(timeSheetApprovals);
+				var result = await _timesheetApprovalsService.CreateTimesheetApproval(timeSheetApprovals);
 				if (result == null)
 				{
 					isSuccess = false;
@@ -158,7 +160,7 @@ namespace TMS.API.Controllers
 			string ExceptionMessage = "";
 			try
 			{
-				int entry = await _timesheetApprovalsRepository.UpdateTimesheetApproval(timeSheetApprovals);
+				int entry = await _timesheetApprovalsService.UpdateTimesheetApproval(timeSheetApprovals);
 				if (entry == null)
 				{
 					isSuccess = false;
@@ -201,7 +203,7 @@ namespace TMS.API.Controllers
 			string ExceptionMessage = "";
 			try
 			{
-				var data = await _timesheetApprovalsRepository.DeleteTimesheetApproval(id);
+				var data = await _timesheetApprovalsService.DeleteTimesheetApproval(id);
 				if (data == null)
 				{
 					isSuccess = false;

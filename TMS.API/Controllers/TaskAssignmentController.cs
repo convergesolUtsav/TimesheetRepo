@@ -4,6 +4,7 @@ using TMS.API.DTOs;
 using TMS.Core;
 using TMS.Infrastructure.Interfaces;
 using TMS.Infrastructure.Repository;
+using TMS.Services.Interfaces;
 
 namespace TMS.API.Controllers
 {
@@ -11,16 +12,16 @@ namespace TMS.API.Controllers
 	[ApiController]
 	public class TaskAssignmentController : ControllerBase
 	{
-		private readonly ITaskAssignmentRepository _taskAssignmentRepository;
+		private readonly ITaskAssignmentService _taskAssignmentService;
 		private readonly ILogger _logger;
 
-		public TaskAssignmentController(ITaskAssignmentRepository taskAssignmentRepository, ILogger<TaskAssignmentController> logger)
-		{
-			_taskAssignmentRepository = taskAssignmentRepository;
-			_logger = logger;
-		}
+        public TaskAssignmentController(ITaskAssignmentService taskAssignmentService, ILogger<TaskAssignmentController> logger)
+        {
+            _taskAssignmentService = taskAssignmentService;
+            _logger = logger;
+        }
 
-		[HttpGet("{id}")]
+        [HttpGet("{id}")]
 		public async Task<ResponseDTO<TaskAssignment>> GetTaskAssignment(int id)
 		{
 			ResponseDTO<TaskAssignment> response = new ResponseDTO<TaskAssignment>();
@@ -31,7 +32,7 @@ namespace TMS.API.Controllers
 			string ExceptionMessage = "";
 			try
 			{
-				var result = await _taskAssignmentRepository.GetById(id);
+				var result = await _taskAssignmentService.GetById(id);
 				if (result == null)
 				{
 					isSuccess = false;
@@ -75,7 +76,7 @@ namespace TMS.API.Controllers
 
 			try
 			{
-				var result = await _taskAssignmentRepository.GetAll();
+				var result = await _taskAssignmentService.GetAll();
 				if (result == null)
 				{
 					isSuccess = false;
@@ -117,7 +118,7 @@ namespace TMS.API.Controllers
 			string ExceptionMessage = "";
 			try
 			{
-				var result = await _taskAssignmentRepository.Add(taskAssignment);
+				var result = await _taskAssignmentService.Add(taskAssignment);
 				if (result == null)
 				{
 					isSuccess = false;
@@ -159,7 +160,7 @@ namespace TMS.API.Controllers
 			string ExceptionMessage = "";
 			try
 			{
-				int entry = await _taskAssignmentRepository.Update(taskAssignment);
+				int entry = await _taskAssignmentService.Update(taskAssignment);
 				if (entry == null)
 				{
 					isSuccess = false;
@@ -202,7 +203,7 @@ namespace TMS.API.Controllers
 			string ExceptionMessage = "";
 			try
 			{
-				var data = await _taskAssignmentRepository.Delete(id);
+				var data = await _taskAssignmentService.Delete(id);
 				if (data == null)
 				{
 					isSuccess = false;
